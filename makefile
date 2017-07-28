@@ -11,16 +11,17 @@
 
 # Run "make help" for target help.
 
-MCU          = at90usb1286
-ARCH         = AVR8
-F_CPU        = 16000000
-F_USB        = $(F_CPU)
-OPTIMIZATION = s
+MCU          ?= at90usb1286
+ARCH         ?= AVR8
+F_CPU        ?= 16000000
+F_USB        ?= $(F_CPU)
+OPTIMIZATION ?= s
+LUFA_PATH    ?= ./LUFA
+CC_FLAGS     ?= -DUSE_LUFA_CONFIG_HEADER -IConfig/
+LD_FLAGS     ?=
+
 TARGET       = Joystick
 SRC          = $(TARGET).c Descriptors.c image.c $(LUFA_SRC_USB)
-LUFA_PATH    = ./LUFA
-CC_FLAGS     = -DUSE_LUFA_CONFIG_HEADER -IConfig/
-LD_FLAGS     =
 
 # Default target
 all:
