@@ -33,7 +33,7 @@ TODO: better steps for how to use GIMP here
 | at90usb646  | Teensy++ 1.0     | untested, but should work |
 | at90usb162  | Teensy 1.0       | untested, but should work |
 
-Linux users should be able to compile and upload the program all in one step (assuming the device is /dev/ttyUSB0):
+Linux users should be able to compile and upload the program all from docker:
 
     # you can customize these
     MCU=at90usb1286
@@ -49,6 +49,8 @@ Linux users should be able to compile and upload the program all in one step (as
         bwstitt/splatoon-2-drawing
 
 However, OS X and Docker and USB don't get along (https://github.com/docker/for-mac/issues/900). So, you will need to do things a little differently.
+
+I have no idea about how to do this on Windows. Pull Requests are welcome.
 
 Install teensy_loader_cli from [Homebrew](https://brew.sh/) (with `brew install teensy_loader_cli`) or hid_bootloader_cli from LUFA. Then run commands like these:
 
