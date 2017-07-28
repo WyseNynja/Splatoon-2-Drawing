@@ -9,16 +9,55 @@ Unlike the Wii U, which handles these controllers on a 'per-game' basis, the Swi
 ### Printing Splatoon Posts
 For my own personal use, I repurposed Switch-Fightstick to output a set sequence of inputs to systematically print Splatoon posts. This works by using the smallest size pen and D-pad inputs to plot out each pixel one-by-one.
 
+The problem is that installing the compilers can take a really long time, so then I bundled most everything you need inside a docker container. You can install Docker from https://www.docker.com/
+
+#### Drawing
+Draw your image 350x36 pixel black and white image in GIMP.
+
+TODO: better steps for how to use GIMP here
+
+#### Programming
+Linux users should be able to compile and upload the program all in one step (assuming the device is /dev/ttyUSB0):
+
+    docker run --rm -it \
+        --env MCU=at90usb1286 \
+        --env PROGRAM=1 \
+        --device=/dev/ttyUSB0 \
+        -v /path/to/your/image.data:/input.data \
+        WyseNynja/Splatoon-2-Drawing
+
+However, OS X and Docker and USB don't get along (https://github.com/docker/for-mac/issues/900). So, you will need to do things a little differently.
+
+Install hid_bootloader_cli from LUFA or teensy_loader_cli with `brew install teensy_loader_cli`. Then run commands like these:
+
+    docker run --rm -it \
+        --env MCU=at90usb1286 \
+        --env OUTPUT=MyAwesomeDrawing \
+        -v /path/to/MyAwesomeDrawing.data:/input.data \
+        -v $(pwd)/target:/target \
+        WyseNynja/Splatoon-2-Drawing
+
+    teensy_loader_cli -w -n -v -mmcu=at90usb1286 target/MyAwesomeDrawing.hex
+
+Note: You can use any name you want instead of "MyAwesomeDrawing" and any directory you want instead of "$(pwd)/target."
+
+MCU options:
+    mk66fx1m0    Teensy 3.6        not supported by LUFA (https://github.com/abcminiuser/lufa/issues/100)
+    mk64fx512    Teensy 3.5        not supported by LUFA
+    mk20dx256    Teensy 3.2 & 3.1  not supported by LUFA
+    mk20dx128    Teensy 3.0        not supported by LUFA
+    mkl26z64     Teensy LC         not supported by LUFA
+    at90usb1286  Teensy++ 2.0      works!
+    atmega32u4   Teensy 2.0        untested, but should work
+    at90usb646   Teensy++ 1.0      untested, but should work
+    at90usb162   Teensy 1.0        untested, but should work
+
 #### Printing Procedure
-Use the analog stick to bring the cursor to the top-right corner, then press the D-pad down once to make sure the cursor is at y-position `0` instead of y-position `-1`. Then plug in the controller. Currently there are issues with controller conflicts while in docked mode which are avoided by using a USB-C to USB-A adapter in handheld mode. Printing currently takes about an hour.
 
-The image printed depends on `image.c` which is generated with `bin2c.py` which takes a 1-bit RAW paletted .data exported from GIMP. An example file is included as `ironic.data`. `bin2c.py` will pack the 8bpp .data to a linear 1bpp array, ie
-
-```
-$ python2 bin2c.py ironic.data > image.c
-```
-
-Each line is printed from right to left in order to avoid pixel skipping issues. Currently there are also issues printing to the right and bottom edges. This repository has been tested using a Teensy 2.0++.
+1. Use the analog stick to bring the cursor to the top-right corner.
+2. Press the D-pad down once to make sure the cursor is at y-position `0` instead of y-position `-1`.
+3. Plug in the custom controller. Currently there are issues with controller conflicts while in docked mode which are avoided by using a USB-C to USB-A adapter in handheld mode.
+4. Wait. Printing currently takes about an hour. Each line is printed from right to left in order to avoid pixel skipping issues. Currently there are also issues printing to the right and bottom edges.
 
 ### Sample
 ![http://i.imgur.com/93B1Usb.jpg](http://i.imgur.com/93B1Usb.jpg)
