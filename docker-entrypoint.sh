@@ -2,24 +2,21 @@
 # TODO: handle being passed "bash" like the official libs require
 set -e
 
-# this if will check if the first argument is a flag
-# but only works if all arguments require a hyphenated flag
-# -v; -SL; -f arg; etc will work, but not arg1 arg2
-if [ "${1:0:1}" = '-' ]; then
-    set -- all "$@"
-fi
-
 # check for the expected command
-if [ "$1" = 'all' ]; then
+if [ "$1" = "all" ]; then
     cd /usr/src/Splatoon-2-Drawing
 
     if [ -e /input.data ]; then
+        echo
         echo "Using custom image."
+        echo
 
         # create a c file for the image
         python2 bin2c.py /input.data > image.c
     else
+        echo
         echo "Using default image. Mount your own at /input.data"
+        echo
     fi
 
     # this is default in the makefile, but we want it in our message
@@ -36,12 +33,15 @@ if [ "$1" = 'all' ]; then
         make program
 
         echo
-        echo "Success!"
+        echo "Success building and programming!"
         echo
     else
         # copy the program to /target
         cp Joystick.hex /target/$OUTPUT.hex
 
+        echo
+        echo "Success building!"
+        echo
         echo "Upload the image with something like:"
         echo
         echo "    teensy_loader_cli -w -n -v -mmcu=$MCU target/$OUTPUT.hex"
