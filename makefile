@@ -17,8 +17,12 @@ F_CPU        ?= 16000000
 F_USB        ?= $(F_CPU)
 OPTIMIZATION ?= s
 LUFA_PATH    ?= ./LUFA
-CC_FLAGS     ?= -DUSE_LUFA_CONFIG_HEADER -IConfig/
-LD_FLAGS     ?=
+CC_FLAGS     += -DUSE_LUFA_CONFIG_HEADER -IConfig/
+LD_FLAGS     +=
+
+LOADER_CLI       ?= teensy_loader_cli
+LOADER_CLI_FLAGS ?= -v -w -n
+LOADER_CLI_FLAGS += -mmcu=$(MCU)
 
 TARGET       = Joystick
 SRC          = $(TARGET).c Descriptors.c image.c $(LUFA_SRC_USB)
@@ -36,3 +40,7 @@ include $(LUFA_PATH)/Build/lufa_dfu.mk
 include $(LUFA_PATH)/Build/lufa_hid.mk
 include $(LUFA_PATH)/Build/lufa_avrdude.mk
 include $(LUFA_PATH)/Build/lufa_atprogram.mk
+
+# Upload the program
+program: $(TARGET).hex
+	$(LOADER_CLI) $(LOADER_CLI_FLAGS) $(TARGET).hex
