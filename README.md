@@ -24,7 +24,7 @@ Linux users should be able to compile and upload the program all in one step (as
         --env PROGRAM=1 \
         --device=/dev/ttyUSB0 \
         -v /path/to/your/image.data:/input.data \
-        WyseNynja/Splatoon-2-Drawing
+        bwstitt/splatoon-2-drawing
 
 However, OS X and Docker and USB don't get along (https://github.com/docker/for-mac/issues/900). So, you will need to do things a little differently.
 
@@ -35,7 +35,7 @@ Install hid_bootloader_cli from LUFA or teensy_loader_cli with `brew install tee
         --env OUTPUT=MyAwesomeDrawing \
         -v /path/to/MyAwesomeDrawing.data:/input.data \
         -v $(pwd)/target:/target \
-        WyseNynja/Splatoon-2-Drawing
+        bwstitt/splatoon-2-drawing
 
     teensy_loader_cli -w -n -v -mmcu=at90usb1286 target/MyAwesomeDrawing.hex
 
