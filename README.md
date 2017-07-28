@@ -1,5 +1,8 @@
 ## Switch-Fightstick
-Proof-of-Concept Fightstick for the Nintendo Switch. Uses the LUFA library and reverse-engineering of the Pokken Tournament Pro Pad for the Wii U to enable custom fightsticks on the Switch System v3.0.0.
+Proof-of-Concept Fightstick for the Nintendo Switch. Uses the [LUFA library](https://github.com/abcminiuser/lufa) and reverse-engineering of the Pokken Tournament Pro Pad for the Wii U to enable custom fightsticks on the Switch System v3.0.0.
+
+![http://i.imgur.com/93B1Usb.jpg](http://i.imgur.com/93B1Usb.jpg)
+*image via [/u/Stofers](https://www.reddit.com/user/Stofers)*
 
 ### Wait, what?
 On June 20, 2017, Nintendo released System Update v3.0.0 for the Nintendo Switch. Along with a number of additional features that were advertised or noted in the changelog, additional hidden features were added. One of those features allows for the use of compatible controllers, such as the Pokken Tournament Pro Pad, to be used on the Nintendo Switch.
@@ -17,40 +20,53 @@ Draw your image 350x36 pixel black and white image in GIMP.
 TODO: better steps for how to use GIMP here
 
 #### Programming
+
+| MCU | | |
+|---|---|---|
+| mk66fx1m0   | Teensy 3.6       | [not supported by LUFA](https://github.com/abcminiuser/lufa/issues/100) |
+| mk64fx512   | Teensy 3.5       | [not supported by LUFA](https://github.com/abcminiuser/lufa/issues/100) |
+| mk20dx256   | Teensy 3.2 & 3.1 | [not supported by LUFA](https://github.com/abcminiuser/lufa/issues/100) |
+| mk20dx128   | Teensy 3.0       | [not supported by LUFA](https://github.com/abcminiuser/lufa/issues/100) |
+| mkl26z64    | Teensy LC        | [not supported by LUFA](https://github.com/abcminiuser/lufa/issues/100) |
+| at90usb1286 | Teensy++ 2.0     | works! default if no MCU set |
+| atmega32u4  | Teensy 2.0       | untested, but should work |
+| at90usb646  | Teensy++ 1.0     | untested, but should work |
+| at90usb162  | Teensy 1.0       | untested, but should work |
+
 Linux users should be able to compile and upload the program all in one step (assuming the device is /dev/ttyUSB0):
 
+    # you can customize these
+    MCU=at90usb1286
+    DEV=/dev/ttyUSB0
+    IMG="/full/path/to/your/AwesomeDrawing.data"
+
+    # this should probably be copy/pasted and run
     docker run --rm -it \
-        --env MCU=at90usb1286 \
+        --env "MCU=$MCU" \
         --env PROGRAM=1 \
-        --device=/dev/ttyUSB0 \
-        -v /path/to/your/image.data:/input.data \
+        --device="$DEV" \
+        -v "$IMG:/input.data" \
         bwstitt/splatoon-2-drawing
 
 However, OS X and Docker and USB don't get along (https://github.com/docker/for-mac/issues/900). So, you will need to do things a little differently.
 
-Install hid_bootloader_cli from LUFA or teensy_loader_cli with `brew install teensy_loader_cli`. Then run commands like these:
+Install teensy_loader_cli from [Homebrew](https://brew.sh/) (with `brew install teensy_loader_cli`) or hid_bootloader_cli from LUFA. Then run commands like these:
 
+    # you can customize these
+    MCU=at90usb1286
+    IMG="/full/path/to/your/AwesomeDrawing.data"
+    OUTPUT=AwesomeDrawing
+    TARGET=$(pwd)/target
+    LOADER=teensy_loader_cli
+
+    # these should probably be copy/pasted and run
     docker run --rm -it \
-        --env MCU=at90usb1286 \
-        --env OUTPUT=MyAwesomeDrawing \
-        -v /path/to/MyAwesomeDrawing.data:/input.data \
-        -v $(pwd)/target:/target \
-        bwstitt/splatoon-2-drawing
-
-    teensy_loader_cli -w -n -v -mmcu=at90usb1286 target/MyAwesomeDrawing.hex
-
-Note: You can use any name you want instead of "MyAwesomeDrawing" and any directory you want instead of "$(pwd)/target."
-
-MCU options:
-    mk66fx1m0    Teensy 3.6        not supported by LUFA (https://github.com/abcminiuser/lufa/issues/100)
-    mk64fx512    Teensy 3.5        not supported by LUFA
-    mk20dx256    Teensy 3.2 & 3.1  not supported by LUFA
-    mk20dx128    Teensy 3.0        not supported by LUFA
-    mkl26z64     Teensy LC         not supported by LUFA
-    at90usb1286  Teensy++ 2.0      works!
-    atmega32u4   Teensy 2.0        untested, but should work
-    at90usb646   Teensy++ 1.0      untested, but should work
-    at90usb162   Teensy 1.0        untested, but should work
+        --env "MCU=$MCU" \
+        -v "$IMG:/input.data" \
+        --env "OUTPUT=$OUTPUT" \
+        -v "$TARGET:/target" \
+        bwstitt/splatoon-2-drawing \
+    && $LOADER -w -n -v -mmcu=$MCU $TARGET/$OUTPUT.hex
 
 #### Printing Procedure
 
@@ -58,7 +74,3 @@ MCU options:
 2. Press the D-pad down once to make sure the cursor is at y-position `0` instead of y-position `-1`.
 3. Plug in the custom controller. Currently there are issues with controller conflicts while in docked mode which are avoided by using a USB-C to USB-A adapter in handheld mode.
 4. Wait. Printing currently takes about an hour. Each line is printed from right to left in order to avoid pixel skipping issues. Currently there are also issues printing to the right and bottom edges.
-
-### Sample
-![http://i.imgur.com/93B1Usb.jpg](http://i.imgur.com/93B1Usb.jpg)
-*image via [/u/Stofers](https://www.reddit.com/user/Stofers)*
