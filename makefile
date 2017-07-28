@@ -20,8 +20,8 @@ LUFA_PATH    ?= ./LUFA
 CC_FLAGS     += -DUSE_LUFA_CONFIG_HEADER -IConfig/
 LD_FLAGS     +=
 
-LOADER_CLI       ?= teensy_loader_cli
-LOADER_CLI_FLAGS ?= -v -w -n
+LOADER_CLI       ?= hid_bootloader_cli
+LOADER_CLI_FLAGS ?= -w -n -v
 LOADER_CLI_FLAGS += -mmcu=$(MCU)
 
 TARGET       = Joystick
