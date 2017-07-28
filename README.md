@@ -35,12 +35,14 @@ TODO: better steps for how to use GIMP here
 
 Linux users should be able to compile and upload the program all from docker:
 
-    # you can customize these
-    MCU=at90usb1286
-    DEV=/dev/ttyUSB0
+    # you must customize this
     IMG="/full/path/to/your/AwesomeDrawing.data"
 
-    # this should probably be copy/pasted and run
+    # you might need to customize these
+    DEV=/dev/ttyUSB0
+    MCU=at90usb1286
+
+    # then copy, paste and run this
     docker run --rm -it \
         --env "MCU=$MCU" \
         --env PROGRAM=1 \
@@ -54,14 +56,16 @@ I have no idea about how to do this on Windows. Pull Requests are welcome.
 
 Install teensy_loader_cli from [Homebrew](https://brew.sh/) (with `brew install teensy_loader_cli`) or hid_bootloader_cli from LUFA. Then run commands like these:
 
-    # you can customize these
-    MCU=at90usb1286
+    # you must customize these
     IMG="/full/path/to/your/AwesomeDrawing.data"
     OUTPUT=AwesomeDrawing
+
+    # you might need to customize these
+    MCU=at90usb1286
     TARGET=$(pwd)/target
     LOADER=teensy_loader_cli
 
-    # these should probably be copy/pasted and run
+    # then copy, paste and run this
     docker run --rm -it \
         --env "MCU=$MCU" \
         -v "$IMG:/input.data" \
