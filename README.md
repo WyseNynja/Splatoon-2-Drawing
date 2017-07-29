@@ -9,9 +9,9 @@ On June 20, 2017, Nintendo released System Update v3.0.0 for the Nintendo Switch
 
 Unlike the Wii U, which handles these controllers on a 'per-game' basis, the Switch treats the Pokken controller as if it was a Switch Pro Controller. Along with having the icon for the Pro Controller, it functions just like it in terms of using it in other games, apart from the lack of physical controls such as analog sticks, the buttons for the stick clicks, or other system buttons such as Home or Capture.
 
-For my own personal use, I repurposed Switch-Fightstick to output a set sequence of inputs to systematically print Splatoon posts. This works by using the smallest size pen and D-pad inputs to plot out each pixel one-by-one.
+For their own personal use, shinyquagsire23 repurposed Switch-Fightstick to output a set sequence of inputs to systematically print Splatoon posts. This works by using the smallest size pen and D-pad inputs to plot out each pixel one-by-one.
 
-The problem is that installing the compilers can take a really long time, so then I bundled most everything you need inside a docker container. You can install Docker from https://www.docker.com/.
+The problem is that installing the compilers can take a really long time, so then WyseNynja bundled most everything you need inside a docker container. You can install Docker from https://www.docker.com/.
 
 #### Drawing
 Draw your image 350x36 pixel black and white indexed raw image in GIMP.
