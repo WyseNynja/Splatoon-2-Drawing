@@ -1,5 +1,5 @@
-## Switch-Fightstick
-Proof-of-Concept Fightstick for the Nintendo Switch. Uses the [LUFA library](https://github.com/abcminiuser/lufa) and reverse-engineering of the Pokken Tournament Pro Pad for the Wii U to enable custom fightsticks on the Switch System v3.0.0.
+## Splatoon-2-Drawing
+Forked from a Proof-of-Concept Fightstick for the Nintendo Switch. Uses the [LUFA library](https://github.com/abcminiuser/lufa) and reverse-engineering of the Pokken Tournament Pro Pad for the Wii U to enable custom built controllers on the Switch System v3.0.0.
 
 ![http://i.imgur.com/93B1Usb.jpg](http://i.imgur.com/93B1Usb.jpg)
 *image via [/u/Stofers](https://www.reddit.com/user/Stofers)*
@@ -9,13 +9,12 @@ On June 20, 2017, Nintendo released System Update v3.0.0 for the Nintendo Switch
 
 Unlike the Wii U, which handles these controllers on a 'per-game' basis, the Switch treats the Pokken controller as if it was a Switch Pro Controller. Along with having the icon for the Pro Controller, it functions just like it in terms of using it in other games, apart from the lack of physical controls such as analog sticks, the buttons for the stick clicks, or other system buttons such as Home or Capture.
 
-### Printing Splatoon Posts
 For my own personal use, I repurposed Switch-Fightstick to output a set sequence of inputs to systematically print Splatoon posts. This works by using the smallest size pen and D-pad inputs to plot out each pixel one-by-one.
 
-The problem is that installing the compilers can take a really long time, so then I bundled most everything you need inside a docker container. You can install Docker from https://www.docker.com/
+The problem is that installing the compilers can take a really long time, so then I bundled most everything you need inside a docker container. You can install Docker from https://www.docker.com/.
 
 #### Drawing
-Draw your image 350x36 pixel black and white image in GIMP.
+Draw your image 350x36 pixel black and white indexed raw image in GIMP.
 
 TODO: better steps for how to use GIMP here
 
@@ -52,7 +51,7 @@ Linux users should be able to compile and upload the program all from docker:
 
 However, OS X and Docker and USB don't get along (https://github.com/docker/for-mac/issues/900). So, you will need to do things a little differently.
 
-I have no idea about how to do this on Windows. Pull Requests are welcome.
+I have no idea about how to do this on Windows. Pull requests are welcome.
 
 Install teensy_loader_cli from [Homebrew](https://brew.sh/) (with `brew install teensy_loader_cli`) or hid_bootloader_cli from LUFA. Then run commands like these:
 
@@ -76,7 +75,18 @@ Install teensy_loader_cli from [Homebrew](https://brew.sh/) (with `brew install 
 
 #### Printing Procedure
 
-1. Use the analog stick to bring the cursor to the top-right corner.
-2. Press the D-pad down once to make sure the cursor is at y-position `0` instead of y-position `-1`.
-3. Plug in the custom controller. Currently there are issues with controller conflicts while in docked mode which are avoided by using a USB-C to USB-A adapter in handheld mode.
-4. Wait. Printing currently takes about an hour. Each line is printed from right to left in order to avoid pixel skipping issues. Currently there are also issues printing to the right and bottom edges.
+1. Use the analog stick to bring the cursor to the top-right corner of an empty drawing.
+2. Ensure the smallest pen size is selected.
+3. Press the D-pad down once to make sure the cursor is at y-position `0` instead of y-position `-1`.
+4. Plug in the custom controller to the USB-C port. 
+5. Wait. Printing currently takes about an hour. Each line is printed from right to left in order to avoid pixel skipping issues.
+
+#### Known Issues
+
+* There are issues with controller conflicts while in docked mode which are avoided by using a USB-C to USB-A adapter in handheld mode.
+* There are also issues printing to the right and bottom edges.
+
+#### Plans
+
+* Faster printing
+* More sample images
