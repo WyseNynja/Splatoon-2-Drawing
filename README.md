@@ -88,5 +88,6 @@ Install teensy_loader_cli from [Homebrew](https://brew.sh/) (with `brew install 
 
 #### Plans
 
+* Automatic image setup (clear the canvas, move to the correct position, set the correct pen size, etc.)
 * Faster printing
 * More sample images
