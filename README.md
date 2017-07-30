@@ -14,7 +14,7 @@ For their own personal use, shinyquagsire23 repurposed Switch-Fightstick to outp
 The problem is that installing the compilers can take a really long time, so then WyseNynja bundled most everything you need inside a docker container. You can install Docker from https://www.docker.com/.
 
 #### Drawing
-Draw your image 350x36 pixel black and white indexed raw image in GIMP.
+Draw your image 320x120 pixel black and white indexed raw image in GIMP.
 
 TODO: better steps for how to use GIMP here
 
